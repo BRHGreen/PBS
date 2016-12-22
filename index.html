@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+  <title>My Scraper</title>
+</head>
+<style media="screen">
+div {
+
+  text-align: center;
+  margin: 20px;
+}
+main {
+  margin-top: 100px;
+}
+
+
+</style>
+<body>
+  <main>
+    <div class="search-container">
+      <input type="text" id="show" placeholder="show">
+      <input type="text" id="series" placeholder="series">
+      <input type="text" id="episode" placeholder="episode">
+      <button type="button" id="search">search</button>
+
+    </div>
+
+    <div class="link-container">
+      <p id="link-ready"></p>
+    </div>
+  </main>
+
+  <ul>
+
+  </ul>
+
+</body>
+<script type="text/javascript">
+$('button').on('click', () => {
+  $.ajax({
+    method: 'POST',
+    url: 'http://localhost:3000',
+    data: {search: $('#show').val()}
+  }).done((data) => {
+    $(data).each((index, magnet) => {
+      $('ul').prepend(`<li>
+        <a href="${magnet}">${magnet}</a>
+        </li>`)
+      }
+    )
+
+    $('a').on('click', function() {
+      console.log($(this).attr('href'));
+      $.ajax({
+        method: 'POST',
+        url: 'http://localhost:3000/peerflix',
+        data: {magnet: $(this).attr('href')}
+      }
+    )
+  })
+})
+})
+
+</script>
+</html>
