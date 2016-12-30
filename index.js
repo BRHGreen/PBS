@@ -40,16 +40,21 @@ function peerflix(req, res) {
 function linksIndex(req, res) {
   var arr = [];
 
-  request(`https://pirateproxy.vip/search/${req.body.search}`, function (error, response, html) {
+  // https://pirateproxy.vip/search/${req.body.search}
+
+  request(`https://pirateproxy.vip/search/atlanta`, function (error, response, html) {
     if (!error && response.statusCode === 200) {
       var $ = cheerio.load(html);
       $('a').each(function(i, element){
-        // console.log(element);
         var a = $(this).prev();
+
+        console.log(a.text());
+
         if (a.attr('href') !== undefined && a.attr('href').length > 30) {
           var link = (a.attr('href'));
           if (link[0] !== '/') arr.push(link.split('&')[0]);
         }
+
       });
     }
     console.log(arr);
