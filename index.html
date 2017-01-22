@@ -19,13 +19,12 @@ main {
 </style>
 <body>
   <main>
-    <div class="search-container">
-      <input type="text" id="show" placeholder="show">
-      <input type="text" id="series" placeholder="series">
-      <input type="text" id="episode" placeholder="episode">
-      <button type="button" id="search">search</button>
-
-    </div>
+    <form class="search-container" method="post" action="/">
+      <input type="text" id="show" name="show" placeholder="show">
+      <input type="text" id="series" name="series" placeholder="series">
+      <input type="text" id="episode" name="episode" placeholder="episode">
+      <input type="submit" id="go" value="submit">
+    </form>
 
     <div class="link-container">
       <p id="link-ready"></p>
@@ -36,9 +35,12 @@ main {
 
   </ul>
 
+<!-- !!ATTENTION!! you probably need to change something with the ajax (just under this comment) post in order to the anchors returned. It's sort of working on the back end though. -->
+
+
 </body>
 <script type="text/javascript">
-$('button').on('click', () => {
+$('#go').on('click', () => {
   $.ajax({
     method: 'POST',
     url: 'http://localhost:3000',

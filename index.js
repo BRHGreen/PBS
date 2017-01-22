@@ -38,17 +38,31 @@ function peerflix(req, res) {
 }
 
 function linksIndex(req, res) {
-  var arr = [];
 
-  // https://pirateproxy.vip/search/${req.body.search}
+  let arr = [];
+  let arr2 = [];
+  let show = req.body.show.replace(" ", "%20");
+  let series = req.body.series;
+  let episode = req.body.episode;
 
-  request(`https://pirateproxy.vip/search/atlanta`, function (error, response, html) {
+  if (series.length < 2) {
+    series = `0${series}`;
+  }
+  if (episode.length < 2) {
+    episode = `0${episode}`;
+  }
+
+  console.log(`https://pirateproxy.vip/search/${show}%20s${series}e${episode}`);
+  var search = `https://pirateproxy.vip/search/${show}%20s${series}e${episode}`;
+
+
+  request(search, function (error, response, html) {
     if (!error && response.statusCode === 200) {
       var $ = cheerio.load(html);
       $('a').each(function(i, element){
         var a = $(this).prev();
 
-        console.log(a.text());
+        var text = a.text();
 
         if (a.attr('href') !== undefined && a.attr('href').length > 30) {
           var link = (a.attr('href'));
@@ -57,7 +71,6 @@ function linksIndex(req, res) {
 
       });
     }
-    console.log(arr);
     return res.send(arr);
   });
 }
